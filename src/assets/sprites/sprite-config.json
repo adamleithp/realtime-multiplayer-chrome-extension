@@ -1,0 +1,23 @@
+{
+  "idle": {
+    "image": "character-idle.png",
+    "frameWidth": 32,
+    "frameHeight": 48,
+    "frameCount": 4,
+    "frameDuration": 200
+  },
+  "walk": {
+    "image": "character-walk.png",
+    "frameWidth": 32,
+    "frameHeight": 48,
+    "frameCount": 6,
+    "frameDuration": 100
+  },
+  "jump": {
+    "image": "character-jump.png",
+    "frameWidth": 32,
+    "frameHeight": 48,
+    "frameCount": 2,
+    "frameDuration": 150
+  }
+}

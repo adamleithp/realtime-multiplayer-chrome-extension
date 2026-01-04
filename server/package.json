@@ -1,0 +1,15 @@
+{
+  "name": "multiplayer-server",
+  "version": "1.0.0",
+  "description": "WebSocket server for multiplayer browser extension",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "start": "NODE_ENV=production node server.js",
+    "dev": "node server.js"
+  },
+  "dependencies": {
+    "ws": "^8.14.0",
+    "uuid": "^9.0.0"
+  }
+}

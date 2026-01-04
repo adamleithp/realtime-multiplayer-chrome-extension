@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Create Extension Icons</title>
+</head>
+<body>
+  <h1>Extension Icon Generator</h1>
+  <p>Click the buttons below to download the icons:</p>
+
+  <button onclick="createIcon(16)">Download 16x16</button>
+  <button onclick="createIcon(48)">Download 48x48</button>
+  <button onclick="createIcon(128)">Download 128x128</button>
+
+  <script>
+    function createIcon(size) {
+      const canvas = document.createElement('canvas');
+      canvas.width = size;
+      canvas.height = size;
+      const ctx = canvas.getContext('2d');
+
+      // Background gradient
+      const gradient = ctx.createLinearGradient(0, 0, size, size);
+      gradient.addColorStop(0, '#667eea');
+      gradient.addColorStop(1, '#764ba2');
+      ctx.fillStyle = gradient;
+      ctx.fillRect(0, 0, size, size);
+
+      // Draw two simple characters
+      const scale = size / 128;
+
+      // Character 1
+      ctx.fillStyle = '#FFD93D';
+      ctx.beginPath();
+      ctx.arc(40 * scale, 50 * scale, 15 * scale, 0, Math.PI * 2);
+      ctx.fill();
+
+      ctx.fillStyle = '#4ECDC4';
+      ctx.fillRect(32 * scale, 65 * scale, 16 * scale, 24 * scale);
+
+      // Character 2
+      ctx.fillStyle = '#FFD93D';
+      ctx.beginPath();
+      ctx.arc(88 * scale, 50 * scale, 15 * scale, 0, Math.PI * 2);
+      ctx.fill();
+
+      ctx.fillStyle = '#FF6B6B';
+      ctx.fillRect(80 * scale, 65 * scale, 16 * scale, 24 * scale);
+
+      // Convert to blob and download
+      canvas.toBlob((blob) => {
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `icon${size}.png`;
+        a.click();
+        URL.revokeObjectURL(url);
+      });
+    }
+  </script>
+</body>
+</html>
