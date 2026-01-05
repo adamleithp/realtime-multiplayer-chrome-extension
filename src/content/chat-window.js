@@ -26,7 +26,7 @@ window.ChatWindow = class ChatWindow {
       background: rgba(0, 0, 0, 0.85);
       border: 2px solid rgba(102, 126, 234, 0.8);
       border-radius: 12px;
-      z-index: 2147483645;
+      z-index: 2147483647;
       display: none;
       flex-direction: column;
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;

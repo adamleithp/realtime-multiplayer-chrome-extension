@@ -1,22 +1,7 @@
 // Game constants for physics, network, and rendering
+// Note: WebSocket URL is now configured through the popup UI
 
 window.MULTIPLAYER_CONSTANTS = window.MULTIPLAYER_CONSTANTS || {};
-
-// ============================================
-// DEPLOYMENT CONFIGURATION
-// ============================================
-// After deploying to Railway/Render, update PRODUCTION_WS_URL with your server URL
-// Example: 'wss://your-app-name.up.railway.app' or 'wss://your-app.onrender.com'
-const PRODUCTION_WS_URL = ''; // Fill this in after deployment
-const USE_PRODUCTION = false; // Set to true to use production server
-
-// Auto-select WebSocket URL
-const getWebSocketURL = () => {
-  if (USE_PRODUCTION && PRODUCTION_WS_URL) {
-    return PRODUCTION_WS_URL;
-  }
-  return 'ws://localhost:8080';
-};
 
 window.MULTIPLAYER_CONSTANTS.PHYSICS = {
   GRAVITY: 0.8,              // pixels/frame^2
@@ -32,7 +17,7 @@ window.MULTIPLAYER_CONSTANTS.NETWORK = {
   RECONNECT_DELAY: 2000,     // ms
   MAX_RECONNECT_ATTEMPTS: 5,
   PING_INTERVAL: 5000,       // ms
-  WS_URL: getWebSocketURL(), // Automatically selects dev or production
+  // WS_URL is now configured through popup UI and stored in chrome.storage
 };
 
 window.MULTIPLAYER_CONSTANTS.RENDERING = {

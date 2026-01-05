@@ -23,7 +23,7 @@ window.OverlayManager = class OverlayManager {
     this.canvas.style.left = '0';
     this.canvas.style.width = '100vw';
     this.canvas.style.height = '100vh';
-    this.canvas.style.zIndex = '2147483647'; // Maximum z-index
+    this.canvas.style.zIndex = '2147483645'; // Below chat window and menu
     this.canvas.style.pointerEvents = 'none'; // Clicks pass through
 
     // Set canvas dimensions

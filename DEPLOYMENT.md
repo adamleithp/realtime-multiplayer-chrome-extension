@@ -45,11 +45,10 @@ Both platforms offer free tiers and work great with WebSocket:
    - Your URL will be something like: `your-app-name.up.railway.app`
    - Note: Railway provides SSL automatically, so use `wss://` protocol
 
-5. **Update Extension**
-   - Open `src/shared/constants.js`
-   - Update line 10: `const PRODUCTION_WS_URL = 'wss://your-app-name.up.railway.app';`
-   - Update line 11: `const USE_PRODUCTION = true;`
-   - Reload extension in Chrome
+5. **Use in Extension**
+   - Open the extension popup
+   - In the "WebSocket Server URL" field, enter: `wss://your-app-name.up.railway.app`
+   - No code changes needed!
 
 ---
 
@@ -79,11 +78,10 @@ Both platforms offer free tiers and work great with WebSocket:
    - Your URL will be: `your-app-name.onrender.com`
    - Note: Render provides SSL automatically, so use `wss://` protocol
 
-6. **Update Extension**
-   - Open `src/shared/constants.js`
-   - Update line 10: `const PRODUCTION_WS_URL = 'wss://your-app-name.onrender.com';`
-   - Update line 11: `const USE_PRODUCTION = true;`
-   - Reload extension in Chrome
+6. **Use in Extension**
+   - Open the extension popup
+   - In the "WebSocket Server URL" field, enter: `wss://your-app-name.onrender.com`
+   - No code changes needed!
 
 ---
 
@@ -134,16 +132,16 @@ Both platforms offer free tiers and work great with WebSocket:
 ## Switching Between Dev and Production
 
 **For Local Testing:**
-```javascript
-// In src/shared/constants.js
-const USE_PRODUCTION = false; // Use localhost:8080
-```
+- Open extension popup
+- Enter `ws://localhost:8080` in the WebSocket Server URL field
+- Join channel
 
 **For Production Testing:**
-```javascript
-// In src/shared/constants.js
-const USE_PRODUCTION = true; // Use Railway/Render
-```
+- Open extension popup
+- Enter your production URL (e.g., `wss://your-app.up.railway.app`)
+- Join channel
+
+The extension saves your last used server URL, so you don't need to enter it every time!
 
 ---
 

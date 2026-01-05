@@ -13,6 +13,20 @@
 
     <form id="joinForm">
       <div class="form-group">
+        <label for="wsUrl">WebSocket Server URL</label>
+        <input
+          type="text"
+          id="wsUrl"
+          placeholder="e.g., ws://localhost:8080 or wss://your-server.com"
+          required
+        />
+        <small style="color: #fff; font-size: 11px; margin-top: 4px; display: block; line-height: 1.4;">
+          Use ws://localhost:8080 when running server locally, or wss://your-server.render.com for production
+          (<a href="https://github.com/adamleithp/realtime-multiplayer-chrome-extension/blob/main/DEPLOYMENT.md" target="_blank" style="color: #60a5fa; text-decoration: underline;">read deployment guide</a>)
+        </small>
+      </div>
+
+      <div class="form-group">
         <label for="channelId">Channel Name</label>
         <input
           type="text"

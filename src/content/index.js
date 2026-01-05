@@ -26,12 +26,16 @@
   const InputHandler = window.InputHandler;
 
   // Get channel info from chrome.storage
-  const { channelId, username, color } = await chrome.storage.local.get(['channelId', 'username', 'color']);
+  const { wsUrl, channelId, username, color } = await chrome.storage.local.get(['wsUrl', 'channelId', 'username', 'color']);
 
   if (!channelId || !username) {
     console.error('Missing channel or username in storage');
     return;
   }
+
+  // Use wsUrl from storage, fallback to localhost
+  const serverUrl = wsUrl || 'ws://localhost:8080';
+  console.log(`Connecting to WebSocket server: ${serverUrl}`);
 
   console.log(`Joining channel: ${channelId} as ${username}`);
 
@@ -47,11 +51,12 @@
   const floatingMenu = document.createElement('div');
   floatingMenu.id = 'multiplayer-floating-menu';
   floatingMenu.innerHTML = `
-    <div style="
+    <div id="multiplayer-menu-container" style="
       position: fixed;
-      top: 20px;
-      right: 20px;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      top: 10px;
+      right: 10px;
+      background: rgba(0, 0, 0, 0.9);
+      border: 1px solid rgba(255, 255, 255, 0.15);
       color: white;
       padding: 16px;
       border-radius: 12px;
@@ -62,6 +67,7 @@
       pointer-events: auto;
       min-width: 280px;
       backdrop-filter: blur(10px);
+      transition: all 0.3s ease;
     ">
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
         <div>
@@ -119,8 +125,8 @@
 
         <button id="multiplayer-close-btn" style="
           width: 100%;
-          background: rgba(255, 255, 255, 0.2);
-          border: 1px solid rgba(255, 255, 255, 0.3);
+          background: rgba(220, 38, 38, 0.8);
+          border: 1px solid rgba(239, 68, 68, 0.8);
           color: white;
           padding: 10px;
           border-radius: 6px;
@@ -128,8 +134,23 @@
           font-size: 13px;
           font-weight: 600;
           transition: all 0.2s;
-        " onmouseover="this.style.background='rgba(255, 255, 255, 0.3)'; this.style.transform='translateY(-1px)'" onmouseout="this.style.background='rgba(255, 255, 255, 0.2)'; this.style.transform='translateY(0)'">
+          margin-bottom: 8px;
+        " onmouseover="this.style.background='rgba(239, 68, 68, 0.9)'; this.style.transform='translateY(-1px)'" onmouseout="this.style.background='rgba(220, 38, 38, 0.8)'; this.style.transform='translateY(0)'">
           Close Multiplayer
+        </button>
+        <button id="multiplayer-minimize-menu-btn" style="
+          width: 100%;
+          background: rgba(255, 255, 255, 0.1);
+          border: 1px solid rgba(255, 255, 255, 0.2);
+          color: white;
+          padding: 10px;
+          border-radius: 6px;
+          cursor: pointer;
+          font-size: 13px;
+          font-weight: 600;
+          transition: all 0.2s;
+        " onmouseover="this.style.background='rgba(255, 255, 255, 0.15)'; this.style.transform='translateY(-1px)'" onmouseout="this.style.background='rgba(255, 255, 255, 0.1)'; this.style.transform='translateY(0)'">
+          Minimize
         </button>
       </div>
     </div>
@@ -144,18 +165,37 @@
   let isMinimized = false;
   const minimizeBtn = document.getElementById('multiplayer-minimize-btn');
   const menuContent = document.getElementById('multiplayer-menu-content');
+  const menuContainer = document.getElementById('multiplayer-menu-container');
 
   minimizeBtn.addEventListener('click', () => {
     isMinimized = !isMinimized;
     if (isMinimized) {
       menuContent.style.display = 'none';
+      menuContainer.style.opacity = '0.5';
+      menuContainer.style.minWidth = 'auto';
+      menuContainer.style.padding = '12px';
       minimizeBtn.textContent = '+';
       minimizeBtn.title = 'Expand';
     } else {
       menuContent.style.display = 'block';
+      menuContainer.style.opacity = '1';
+      menuContainer.style.minWidth = '280px';
+      menuContainer.style.padding = '16px';
       minimizeBtn.textContent = '−';
       minimizeBtn.title = 'Minimize';
     }
+  });
+
+  // Handle minimize button in menu (does same as top toggle)
+  const minimizeMenuBtn = document.getElementById('multiplayer-minimize-menu-btn');
+  minimizeMenuBtn.addEventListener('click', () => {
+    isMinimized = true;
+    menuContent.style.display = 'none';
+    menuContainer.style.opacity = '0.5';
+    menuContainer.style.minWidth = 'auto';
+    menuContainer.style.padding = '12px';
+    minimizeBtn.textContent = '+';
+    minimizeBtn.title = 'Expand';
   });
 
   // Handle color picker change
@@ -177,8 +217,8 @@
   // Load level data
   const level = new Level();
 
-  // Initialize WebSocket
-  const ws = new WebSocketClient(constants.NETWORK.WS_URL);
+  // Initialize WebSocket with user-configured URL
+  const ws = new WebSocketClient(serverUrl);
 
   // Set up message handlers
   ws.on(MessageTypes.CHANNEL_JOINED, (payload) => {

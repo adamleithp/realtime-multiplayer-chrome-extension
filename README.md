@@ -75,9 +75,9 @@ See [DEPLOYMENT.md](DEPLOYMENT.md) for detailed instructions.
 **Quick Deploy:**
 1. Push code to GitHub
 2. Deploy to [Railway](https://railway.app) or [Render](https://render.com)
-3. Update `PRODUCTION_WS_URL` in `src/shared/constants.js`
-4. Set `USE_PRODUCTION = true`
-5. Reload extension
+3. Get your server URL (e.g., `wss://your-app.up.railway.app`)
+4. Open extension popup and enter your server URL
+5. No code changes needed!
 
 ## Project Structure
 

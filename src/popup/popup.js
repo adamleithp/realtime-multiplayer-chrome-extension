@@ -1,12 +1,15 @@
 // Popup logic for joining a channel
 
 const form = document.getElementById('joinForm');
+const wsUrlInput = document.getElementById('wsUrl');
 const channelInput = document.getElementById('channelId');
 const usernameInput = document.getElementById('username');
 const statusDiv = document.getElementById('status');
 
 // Load saved values
-chrome.storage.local.get(['channelId', 'username'], (result) => {
+chrome.storage.local.get(['wsUrl', 'channelId', 'username'], (result) => {
+  // Default to localhost if not set
+  wsUrlInput.value = result.wsUrl || 'ws://localhost:8080';
   if (result.channelId) channelInput.value = result.channelId;
   if (result.username) usernameInput.value = result.username;
 });
@@ -14,11 +17,18 @@ chrome.storage.local.get(['channelId', 'username'], (result) => {
 form.addEventListener('submit', async (e) => {
   e.preventDefault();
 
+  const wsUrl = wsUrlInput.value.trim();
   const channelId = channelInput.value.trim();
   const username = usernameInput.value.trim();
 
-  if (!channelId || !username) {
+  if (!wsUrl || !channelId || !username) {
     showStatus('Please fill in all fields', 'error');
+    return;
+  }
+
+  // Validate WebSocket URL format
+  if (!wsUrl.startsWith('ws://') && !wsUrl.startsWith('wss://')) {
+    showStatus('WebSocket URL must start with ws:// or wss://', 'error');
     return;
   }
 
@@ -27,7 +37,7 @@ form.addEventListener('submit', async (e) => {
   const color = colors[Math.floor(Math.random() * colors.length)];
 
   // Save to storage
-  await chrome.storage.local.set({ channelId, username, color });
+  await chrome.storage.local.set({ wsUrl, channelId, username, color });
 
   try {
     // Get active tab
