@@ -2,6 +2,9 @@
 
 A Chrome extension that adds a multiplayer experience to any website! See other users' characters, chat, and send emoji reactions - all overlaid on top of any webpage.
 
+![2026-01-05 05 18 03](https://github.com/user-attachments/assets/2d03f66f-0cb2-49ee-a2b1-402dbe84128a)
+
+
 ## Features
 
 - 🎮 **Real-time Multiplayer**: See other users moving around on any website
